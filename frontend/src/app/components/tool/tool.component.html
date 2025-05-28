@@ -1,0 +1,49 @@
+<div class="container">
+  <h2>📱 Android Forensic Tool</h2>
+
+  <button (click)="connectDevice()">🔌 Connect</button>
+  <button (click)="fetchImages()" [disabled]="!isConnected || isLoading">🖼 Fetch Images</button>
+
+
+  <button (click)="fetchImages1()">Illegal Images Detected</button>
+  
+  
+
+
+  <!-- <img src="images\security-1.png" alt="Security Services Icon"> -->
+
+  <!-- Local assets/images -->
+  <div *ngIf="showImages" class="image-grid">
+    <img *ngFor="let img of images1" [src]="img" alt="Local Image" />
+  </div>
+
+  <!-- Loading UI -->
+  <div *ngIf="isLoading" class="loading-box">
+    <p>Fetching Images... {{ loadProgress }}%</p>
+    <div class="progress-bar">
+      <div class="progress" [style.width.%]="loadProgress"></div>
+    </div>
+  </div>
+
+  <!-- Fetched images -->
+  <div *ngIf="images.length > 0" class="grid-container">
+    <div *ngFor="let img of images" class="image-box">
+      <img
+        *ngIf="img" 
+        [src]="'http://localhost:3000/image?file=' + encode(img)"
+        alt="Fetched image"
+        class="preview-img"
+      />
+      <p>{{ img.split('/').pop() }}</p>
+      <button (click)="downloadImage(img)">
+        ⬇ Download
+        <span *ngIf="downloading === img">({{ downloadProgress }}%)</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- No images fallback -->
+  <p *ngIf="hasFetched && images.length === 0 && isConnected && !isLoading">
+    No images found.
+  </p>
+</div>
